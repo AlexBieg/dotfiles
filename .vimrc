@@ -5,6 +5,8 @@
 " Use Vim settings, rather than Vi settings
 set nocompatible
 
+imap jk <Esc>
+
 " Set up Pathogen
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 filetype off
