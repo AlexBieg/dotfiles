@@ -8,7 +8,7 @@ antigen bundle pyenv
 antigen bundle colored-man-pages
 
 # Load the theme.
-antigen theme robbyrussell
+antigen theme agnoster
 
 # Syntax highlighting bundle.
 antigen bundle zsh-users/zsh-syntax-highlighting
