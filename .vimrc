@@ -1,11 +1,11 @@
-" vim:fdm=marker
+:" vim:fdm=marker
 
 " General Settings {{{
 
+imap jk <Esc>
+
 " Use Vim settings, rather than Vi settings
 set nocompatible
-
-imap jk <Esc>
 
 " Set up Pathogen
 runtime bundle/vim-pathogen/autoload/pathogen.vim
@@ -383,6 +383,7 @@ let g:javascript_plugin_jsdoc = 1
 
 " Only enable JSX highlighting w/ extension
 let g:jsx_ext_required = 1
+
 
 " }}}
 

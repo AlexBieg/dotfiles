@@ -1,60 +1,60 @@
-class Point {
-  constructor(x, y, dx, dy, r, maxDist) {
-    this.x = x;
-    this.y = y;
-    this.dx = dx;
-    this.dy = dy;
-    this.r = r;
-    this.maxDist = maxDist;
-  }
-
-  updatePoint(ctx) {
-    this.x += this.dx;
-    this.y += this.dy;
-
-    // Loop points back around if they hit the edges of the screen
-    if (this.x + this.r > ctx.canvas.width) {
-      this.x = 0 + this.r;
-    }
-
-    if (this.x - this.r < 0) {
-      this.x = ctx.canvas.width - this.r;
-    }
-
-    if (this.y + this.r > ctx.canvas.height) {
-      this.y = 0 + this.r;
-    }
-
-    if (this.y - this.r < 0) {
-      this.y = ctx.canvas.height - this.r;
-    }
-  }
-
-  drawPoint(ctx) {
-    ctx.fillStyle = '#34b1eb';
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.r, 0, 2*Math.PI);
-    ctx.fill();
-  }
-
-  drawClosestLine(ctx, points) {
-    points.forEach((point) => {
-      const pointDist = Math.sqrt(Math.pow(point.x - this.x, 2) + Math.pow(point.y - this.y, 2));
-      const percentage = 1 - (pointDist/this.maxDist);
-
-      if (pointDist <= this.maxDist) {
-        ctx.strokeStyle = '#34b1eb';
-        ctx.lineWidth = percentage/2;
-        ctx.beginPath();
-        ctx.moveTo(this.x, this.y);
-        ctx.lineTo(point.x, point.y);
-        ctx.stroke();
-      }
-    });
-  }
-}
-
 (function() {
+  class Point {
+    constructor(x, y, dx, dy, r, maxDist) {
+      this.x = x;
+      this.y = y;
+      this.dx = dx;
+      this.dy = dy;
+      this.r = r;
+      this.maxDist = maxDist;
+    }
+
+    updatePoint(ctx) {
+      this.x += this.dx;
+      this.y += this.dy;
+
+      // Loop points back around if they hit the edges of the screen
+      if (this.x + this.r > ctx.canvas.width) {
+        this.x = 0 + this.r;
+      }
+
+      if (this.x - this.r < 0) {
+        this.x = ctx.canvas.width - this.r;
+      }
+
+      if (this.y + this.r > ctx.canvas.height) {
+        this.y = 0 + this.r;
+      }
+
+      if (this.y - this.r < 0) {
+        this.y = ctx.canvas.height - this.r;
+      }
+    }
+
+    drawPoint(ctx) {
+      ctx.fillStyle = '#34b1eb';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, 2*Math.PI);
+      ctx.fill();
+    }
+
+    drawClosestLine(ctx, points) {
+      points.forEach((point) => {
+        const pointDist = Math.sqrt(Math.pow(point.x - this.x, 2) + Math.pow(point.y - this.y, 2));
+        const percentage = 1 - (pointDist/this.maxDist);
+
+        if (pointDist <= this.maxDist) {
+          ctx.strokeStyle = '#34b1eb';
+          ctx.lineWidth = percentage/2;
+          ctx.beginPath();
+          ctx.moveTo(this.x, this.y);
+          ctx.lineTo(point.x, point.y);
+          ctx.stroke();
+        }
+      });
+    }
+  }
+
   const canvas = document.getElementById('background');
   const ctx = canvas.getContext('2d');
 

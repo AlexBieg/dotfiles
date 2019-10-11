@@ -45,15 +45,26 @@ body {
   padding: 20px;
 }
 
-#weather {
-  display: inline-block;
+#weather-link{
   float: right;
   margin: 1;
   font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
-  font-size: 1.75em;
-  font-weight: 100;
   background: #333;
   padding: 20px;
+  display: flex;
+  align-items: center;
+}
+#weather {
+  font-size: 1.75em;
+  font-weight: 100;
+  display: inline-block;
+  margin: 0;
+}
+
+#weather-range {
+  display: inline-block;
+  margin: 0;
+  margin-left: 20;
 }
 
 
