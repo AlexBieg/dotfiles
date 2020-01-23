@@ -1,8 +1,10 @@
-:" vim:fdm=marker
-
+" vim:fdm=marker
 " General Settings {{{
-
 imap jk <Esc>
+set path=.,/usr/include,,**
+set wildignore+=*/min/*,*/vendor/*,*/node_modules/*,*/bower_components/*
+let &t_SI = "\e[6 q"
+let &t_EI = "\e[2 q"
 
 " Use Vim settings, rather than Vi settings
 set nocompatible
@@ -182,7 +184,7 @@ set guioptions-=R
 " Restore test-based tab bar in MacVim
 set guioptions-=e
 
-" Set the font to something pretty 
+" Set the font to something pretty
 set guifont=Hasklig\ Regular:h14
 
 " Always display statusline
@@ -304,7 +306,7 @@ if ! has('gui_running')
   set ttimeoutlen=10
   augroup FastEscape
     autocmd!
-    au InsertEnter * set timeoutlen=0
+    au InsertEnter * set timeoutlen=250
     au InsertLeave * set timeoutlen=1000
   augroup END
 endif
