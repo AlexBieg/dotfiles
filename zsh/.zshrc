@@ -117,3 +117,5 @@ export FZF_BASE=/opt/homebrew/bin/fzf
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+alias lz=lazygit
