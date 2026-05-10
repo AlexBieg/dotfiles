@@ -1,0 +1,15 @@
+[[language]]
+name = "python"
+language-id = "python"
+auto-format = true
+language-servers = ["ty", "ruff", "lsp-ai"]
+file-types = ["py", "ipynb"]
+comment-token = "#"
+shebangs = ["python"]
+
+[language-server.ty]
+command = "ty"
+args = ["server"]
+
+[language-server.lsp-ai]
+command = "lsp-ai"

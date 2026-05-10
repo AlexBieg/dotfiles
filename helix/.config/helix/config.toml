@@ -1,0 +1,23 @@
+theme='gruvbox'
+
+[keys.insert]
+j = { k = "normal_mode" } # Maps `jk` to exit insert mode
+
+[keys.normal]
+"{" = "goto_prev_paragraph"
+"}" = "goto_next_paragraph"
+X = "extend_line_up"
+"C-o" = [
+  ":sh curl -s -X POST http://localhost:4096/tui/append-prompt -H 'Content-Type: application/json' -d '{\"text\": \"@%{buffer_name}\"}'",
+]
+C-r = ":reload-all"
+
+
+[keys.normal.space.o]
+o = ":! echo %{buffer_name} | opinject"
+l = ":! echo %{buffer_name}:%{selection_line_start}-%{selection_line_end} | opinject"
+p = ':! echo "%{buffer_name}:%{selection_line_start}-%{selection_line_end}""\n\n""%{selection}" | opinject'
+
+[editor.cursor-shape]
+insert = 'bar'
+
