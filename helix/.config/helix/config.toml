@@ -21,3 +21,5 @@ p = ':! echo "%{buffer_name}:%{selection_line_start}-%{selection_line_end}""\n\n
 [editor.cursor-shape]
 insert = 'bar'
 
+[editor.file-picker]
+hidden = false
