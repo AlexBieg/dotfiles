@@ -12,11 +12,16 @@ X = "extend_line_up"
 ]
 C-r = ":reload-all"
 
+[keys.normal.space]
+x = ':buffer-close'
 
 [keys.normal.space.o]
 o = ":! echo %{buffer_name} | opinject"
 l = ":! echo %{buffer_name}:%{selection_line_start}-%{selection_line_end} | opinject"
 p = ':! echo "%{buffer_name}:%{selection_line_start}-%{selection_line_end}""\n\n""%{selection}" | opinject'
+
+[editor]
+bufferline = "always"
 
 [editor.cursor-shape]
 insert = 'bar'
