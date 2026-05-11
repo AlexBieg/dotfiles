@@ -22,6 +22,7 @@ cd ~/dotfiles
 | `zsh`   | `.zshrc`, `.zshenv`, `.zprofile` — auto-installs Oh My Zsh if missing |
 | `tmux`  | `.tmux.conf` |
 | `helix` | `.config/helix/config.toml`, `.config/helix/languages.toml` |
+| `zellij` | `.config/zellij/config.kdl` |
 
 ## How it works
 
