@@ -1,5 +1,6 @@
 # theme='gruvbox'
-theme='term16_dark'
+# theme='term16_dark'
+theme = 'custom'
 
 [keys.insert]
 j = { k = "normal_mode" } # Maps `jk` to exit insert mode
