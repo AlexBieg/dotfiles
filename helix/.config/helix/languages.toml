@@ -2,14 +2,19 @@
 name = "python"
 language-id = "python"
 auto-format = true
-language-servers = ["ty", "ruff", "lsp-ai"]
+language-servers = ["ruff", "pyright"]
 file-types = ["py", "ipynb"]
 comment-token = "#"
 shebangs = ["python"]
 
-[language-server.ty]
-command = "ty"
-args = ["server"]
+# [language-server.ty]
+# command = "ty"
+# args = ["server"]
 
-[language-server.lsp-ai]
-command = "lsp-ai"
+# [language-server.lsp-ai]
+# command = "lsp-ai"
+#
+
+[[language]]
+name = "bash"
+file-types = ["sh", "bash", "zsh", "conf", "tmux.conf", ".tmux.conf"]

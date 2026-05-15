@@ -39,7 +39,7 @@ ZSH_THEME="amuse"
 # DISABLE_LS_COLORS="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
+DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
 ENABLE_CORRECTION="true"
@@ -71,7 +71,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git fzf)
+plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -105,17 +105,17 @@ fi
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 export PATH="$HOME/bin:$PATH"
 # # opencode
-export PATH=/Users/alexbieg/.opencode/bin:$PATH
+# export PATH=/Users/alexbieg/.opencode/bin:$PATH
 alias python=python3
-export FZF_BASE=/opt/homebrew/bin/fzf
+# export FZF_BASE=/opt/homebrew/bin/fzf
 
-. "$HOME/.local/bin/env"
+# . "$HOME/.local/bin/env"
 
 # bun completions
-[ -s "/Users/alexbieg/.bun/_bun" ] && source "/Users/alexbieg/.bun/_bun"
+# [ -s "/Users/alexbieg/.bun/_bun" ] && source "/Users/alexbieg/.bun/_bun"
 
 # bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+# export BUN_INSTALL="$HOME/.bun"
+# export PATH="$BUN_INSTALL/bin:$PATH"
 
 alias lz=lazygit

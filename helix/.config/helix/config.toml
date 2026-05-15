@@ -1,4 +1,5 @@
-theme='gruvbox'
+# theme='gruvbox'
+theme='term16_dark'
 
 [keys.insert]
 j = { k = "normal_mode" } # Maps `jk` to exit insert mode
@@ -7,18 +8,19 @@ j = { k = "normal_mode" } # Maps `jk` to exit insert mode
 "{" = "goto_prev_paragraph"
 "}" = "goto_next_paragraph"
 X = "extend_line_up"
-"C-o" = [
-  ":sh curl -s -X POST http://localhost:4096/tui/append-prompt -H 'Content-Type: application/json' -d '{\"text\": \"@%{buffer_name}\"}'",
-]
+# "C-o" = [
+#   ":sh tmux send-keys -t \"$(tmux list-panes -a -F '#{pane_pid} #{pane_id}' | while read p i; do pgrep -P \"$p\" -f claude >/dev/null && { echo \"$i\"; break; }; done)\" \"your message here\"",
+# ]
 C-r = ":reload-all"
 
 [keys.normal.space]
 x = ':buffer-close'
+m = ":sh git log -n 5 --format='format:%%h (%%an: %%ar) %%s' --no-patch -L%{cursor_line},+1:%{buffer_name}"
 
 [keys.normal.space.o]
-o = ":! echo %{buffer_name} | opinject"
-l = ":! echo %{buffer_name}:%{selection_line_start}-%{selection_line_end} | opinject"
-p = ':! echo "%{buffer_name}:%{selection_line_start}-%{selection_line_end}""\n\n""%{selection}" | opinject'
+o = ":sh tmux send-keys -t \"$(tmux list-panes -a -F '#{pane_pid} #{pane_id}' | while read p i; do pgrep -P \"$p\" -f claude >/dev/null && { echo \"$i\"; break; }; done)\" \"@%{buffer_name}\""
+l = ":sh tmux send-keys -t \"$(tmux list-panes -a -F '#{pane_pid} #{pane_id}' | while read p i; do pgrep -P \"$p\" -f claude >/dev/null && { echo \"$i\"; break; }; done)\" \"@%{buffer_name}:%{selection_line_start}-%{selection_line_end}\""
+p = ":sh tmux send-keys -t \"$(tmux list-panes -a -F '#{pane_pid} #{pane_id}' | while read p i; do pgrep -P \"$p\" -f claude >/dev/null && { echo \"$i\"; break; }; done)\" \"@%{buffer_name}:%{selection_line_start}-%{selection_line_end}\" Escape \"[13;2u\" Escape \"[13;2u\" \"%{selection}\""
 
 [editor]
 bufferline = "always"
