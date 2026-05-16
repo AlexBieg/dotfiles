@@ -1,5 +1,3 @@
-# theme='gruvbox'
-# theme='term16_dark'
 theme = 'custom'
 
 [keys.insert]
@@ -17,7 +15,7 @@ C-r = ":reload-all"
 [keys.normal.space]
 x = ':buffer-close'
 m = [
-  ":echo %sh{git show --no-patch --format='%%h (%%an: %%ar): %%s' $(git blame -p %{buffer_name} -L%{cursor_line},+1 | head -1 | cut -d' ' -f1)}",
+  ":sh git show --no-patch --format='%%h (%%an: %%ar): %%s' $(git blame -p %{buffer_name} -L%{cursor_line},+1 | head -1 | cut -d' ' -f1)"
 ]
 e = [
   ':sh rm -f /tmp/unique-file',
