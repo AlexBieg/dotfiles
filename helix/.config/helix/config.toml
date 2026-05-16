@@ -7,15 +7,12 @@ j = { k = "normal_mode" } # Maps `jk` to exit insert mode
 "{" = "goto_prev_paragraph"
 "}" = "goto_next_paragraph"
 X = "extend_line_up"
-# "C-o" = [
-#   ":sh tmux send-keys -t \"$(tmux list-panes -a -F '#{pane_pid} #{pane_id}' | while read p i; do pgrep -P \"$p\" -f claude >/dev/null && { echo \"$i\"; break; }; done)\" \"your message here\"",
-# ]
 C-r = ":reload-all"
 
 [keys.normal.space]
 x = ':buffer-close'
 m = [
-  ":sh bash -c 'h=$(git blame -L%{cursor_line},%{cursor_line} --porcelain %{buffer_name} | head -1 | cut -d\" \" -f1); git log -n 1 --format=\"format:%%h (%%an: %%ar) %%s\" --no-patch $h'",
+  ":sh bash -c 'h=$(git blame -L%{cursor_line},%{cursor_line} --porcelain %{buffer_name} | head -1 | cut -d\" \" -f1); git log -n 1 --format=\"format:%%h (%%an: %%ar) \\\"%%s\\\"\" --no-patch $h'",
 ]
 M = [
   ":sh bash -c 'h=$(git blame -L%{cursor_line},%{cursor_line} --porcelain %{buffer_name} | head -1 | cut -d\" \" -f1); r=$(git remote get-url origin | sed \"s/.*github.com[:/]//;s/\\.git$//\"); open \"https://github.com/$r/commit/$h\"'",
