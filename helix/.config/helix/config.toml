@@ -28,6 +28,8 @@ bufferline = "always"
 
 [editor.cursor-shape]
 insert = 'bar'
+normal = 'underline'
+select = 'underline'
 
 [editor.file-picker]
 hidden = false

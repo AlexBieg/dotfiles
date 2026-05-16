@@ -19,7 +19,7 @@
 "ui.selection" = { bg = "gray" }
 "ui.statusline" = { fg = "light-gray", bg = "gray" }
 "ui.statusline.inactive" = { bg = "black" }
-"ui.virtual" = { fg = "white", bg = "red", modifiers = ["bold", "italic"] }
+"ui.virtual" = { fg = "white", bg = "black", modifiers = ["bold", "italic", "bright"] }
 "ui.virtual.indent-guide" = { fg = "gray" }
 "ui.virtual.whitespace" = {}
 "ui.virtual.wrap" = { fg = "gray" }
