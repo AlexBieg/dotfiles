@@ -15,7 +15,10 @@ C-r = ":reload-all"
 [keys.normal.space]
 x = ':buffer-close'
 m = [
-  ":sh git show --no-patch --format='%%h (%%an: %%ar): %%s' $(git blame -p %{buffer_name} -L%{cursor_line},+1 | head -1 | cut -d' ' -f1)"
+  ":sh bash -c 'h=$(git blame -L%{cursor_line},%{cursor_line} --porcelain %{buffer_name} | head -1 | cut -d\" \" -f1); git log -n 1 --format=\"format:%%h (%%an: %%ar) %%s\" --no-patch $h'",
+]
+M = [
+  ":sh bash -c 'h=$(git blame -L%{cursor_line},%{cursor_line} --porcelain %{buffer_name} | head -1 | cut -d\" \" -f1); r=$(git remote get-url origin | sed \"s/.*github.com[:/]//;s/\\.git$//\"); open \"https://github.com/$r/commit/$h\"'",
 ]
 e = [
   ':sh rm -f /tmp/unique-file',
