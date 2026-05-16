@@ -17,6 +17,26 @@ C-r = ":reload-all"
 [keys.normal.space]
 x = ':buffer-close'
 m = ":sh git log -n 5 --format='format:%%h (%%an: %%ar) %%s' --no-patch -L%{cursor_line},+1:%{buffer_name}"
+e = [
+  ':sh rm -f /tmp/unique-file',
+  ':insert-output yazi "%{buffer_name}" --chooser-file=/tmp/unique-file',
+  ':sh printf "\x1b[?1049h\x1b[?2004h" > /dev/tty',
+  ':open %sh{cat /tmp/unique-file}',
+  ':redraw',
+]
+E = [
+  ':sh rm -f /tmp/unique-file',
+  ':insert-output yazi --chooser-file=/tmp/unique-file',
+  ':sh printf "\x1b[?1049h\x1b[?2004h" > /dev/tty',
+  ':open %sh{cat /tmp/unique-file}',
+  ':redraw',
+]
+
+n = [
+  ':insert-output lazygit',
+  ':redraw'
+]
+
 
 [keys.normal.space.o]
 o = ":sh tmux send-keys -t \"$(tmux list-panes -a -F '#{pane_pid} #{pane_id}' | while read p i; do pgrep -P \"$p\" -f claude >/dev/null && { echo \"$i\"; break; }; done)\" \"@%{buffer_name}\""
@@ -28,7 +48,7 @@ bufferline = "always"
 
 [editor.cursor-shape]
 insert = 'bar'
-normal = 'underline'
+# normal = 'underline'
 select = 'underline'
 
 [editor.file-picker]

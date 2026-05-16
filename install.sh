@@ -12,7 +12,7 @@ info()  { echo -e "${GREEN}[INFO]${NC} $1"; }
 warn()  { echo -e "${YELLOW}[WARN]${NC} $1"; }
 error() { echo -e "${RED}[ERROR]${NC} $1"; }
 
-AVAILABLE_PACKAGES=(zsh tmux helix zellij)
+AVAILABLE_PACKAGES=(zsh tmux helix zellij yazi)
 
 usage() {
     cat <<EOF
@@ -105,6 +105,10 @@ setup_zellij() {
     stow_package "zellij"
 }
 
+setup_yazi() {
+    stow_package "yazi"
+}
+
 # ── Main ─────────────────────────────────────────────────────────
 info "Setting up dotfiles from $DOTFILES_DIR"
 
@@ -114,6 +118,7 @@ for pkg in "${PACKAGES[@]}"; do
         tmux)  setup_tmux  ;;
         helix) setup_helix ;;
         zellij) setup_zellij ;;
+        yazi) setup_yazi ;;
         *)
             error "Unknown package: $pkg. Available: ${AVAILABLE_PACKAGES[*]}"
             exit 1
