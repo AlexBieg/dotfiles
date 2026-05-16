@@ -16,7 +16,9 @@ C-r = ":reload-all"
 
 [keys.normal.space]
 x = ':buffer-close'
-m = ":sh git log -n 5 --format='format:%%h (%%an: %%ar) %%s' --no-patch -L%{cursor_line},+1:%{buffer_name}"
+m = [
+  ":echo %sh{git show --no-patch --format='%%h (%%an: %%ar): %%s' $(git blame -p %{buffer_name} -L%{cursor_line},+1 | head -1 | cut -d' ' -f1)}",
+]
 e = [
   ':sh rm -f /tmp/unique-file',
   ':insert-output yazi "%{buffer_name}" --chooser-file=/tmp/unique-file',
@@ -31,12 +33,10 @@ E = [
   ':open %sh{cat /tmp/unique-file}',
   ':redraw',
 ]
-
-n = [
+g = [
   ':insert-output lazygit',
   ':redraw'
 ]
-
 
 [keys.normal.space.o]
 o = ":sh tmux send-keys -t \"$(tmux list-panes -a -F '#{pane_pid} #{pane_id}' | while read p i; do pgrep -P \"$p\" -f claude >/dev/null && { echo \"$i\"; break; }; done)\" \"@%{buffer_name}\""
