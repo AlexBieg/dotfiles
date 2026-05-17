@@ -61,7 +61,7 @@
 "keyword.directive" = { fg = "light-yellow", modifiers = ["bold"] }
 "keyword.operator" = { fg = "light-blue", modifiers = ["bold"] }
 "label" = "light-green"
-"namespace" = { fg = "blue", modifiers = ["dim"] }
+"namespace" = { fg = "cyan" }
 
 "markup.heading" = "light-blue"
 "markup.list" = "light-red"

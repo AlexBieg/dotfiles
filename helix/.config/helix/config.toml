@@ -58,7 +58,6 @@ c = ":sh ~/.local/bin/helix-pi clear"
 [editor]
 bufferline = "always"
 end-of-line-diagnostics = "info"
-rulers = [120]
 color-modes = true
 
 [editor.cursor-shape]
