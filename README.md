@@ -23,6 +23,8 @@ cd ~/dotfiles
 | `tmux`  | `.tmux.conf` |
 | `helix` | `.config/helix/config.toml`, `.config/helix/languages.toml` |
 | `zellij` | `.config/zellij/config.kdl` |
+| `yazi` | `.config/yazi/yazi.toml` |
+| `pi`   | `.pi/agent/settings.json`, `.pi/agent/extensions/helix-bridge.ts`, `.local/bin/helix-pi` — Helix ↔ pi bridge extension and CLI helper |
 
 ## How it works
 

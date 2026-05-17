@@ -1,0 +1,178 @@
+#!/bin/bash
+# helix-pi — Bridge between Helix editor and pi coding agent
+#
+# Commands:
+#   context <filepath> [start-end]
+#     Appends the file to the context state file so that pi's
+#     helix-bridge.ts extension can show a live widget above
+#     the editor listing all files currently in context.
+#     Also writes the context markdown for the LLM.
+#
+#     Each call appends (accumulates). Use helix-pi clear to
+#     reset, or /helix remove <n> / /helix-clear in pi.
+#
+#     If stdin is piped, it's included as "Selected text".
+#
+#   clear
+#     Removes stored context.
+#
+#   reload
+#     Finds the Helix tmux pane and sends :reload-all.
+#     (Used by pi's helix_edit tool, but also callable manually.)
+#
+# Examples (in Helix keybindings):
+#   :sh helix-pi context "%{buffer_name}"
+#   :sh helix-pi context "%{buffer_name}" "%{selection_line_start}-%{selection_line_end}"
+#   :sh printf '%s' "%{selection}" | helix-pi context "%{buffer_name}" "%{selection_line_start}-%{selection_line_end}"
+
+CONTEXT_FILE="/tmp/helix-context.md"
+STATE_FILE="/tmp/helix-context-state.json"
+
+case "${1:-help}" in
+  context)
+    FILE="$2"
+    RANGE="$3"
+
+    # Ensure file exists
+    if [ ! -f "$FILE" ]; then
+      echo "Error: file not found: $FILE" >&2
+      exit 1
+    fi
+
+    # Parse line range
+    LINE_START=""
+    LINE_END=""
+    if [ -n "$RANGE" ]; then
+      LINE_START="${RANGE%-*}"
+      LINE_END="${RANGE#*-}"
+    fi
+
+    # Collect piped selection text (if any)
+    HAS_SELECTION="false"
+    SELECTION=""
+    if [ ! -t 0 ]; then
+      SELECTION=$(cat)
+      if [ -n "$SELECTION" ]; then
+        HAS_SELECTION="true"
+      fi
+    fi
+
+    # ── Write context markdown (for the LLM) ──
+    {
+      echo "## Helix Context"
+      echo ""
+      echo "**File:** \`$FILE\`${RANGE:+ (lines $RANGE)}"
+      echo ""
+      echo '```'
+      if [ -n "$RANGE" ]; then
+        sed -n "${LINE_START},${LINE_END}p" "$FILE" 2>/dev/null
+      else
+        cat "$FILE" 2>/dev/null
+      fi
+      echo '```'
+
+      if [ -n "$SELECTION" ]; then
+        echo ""
+        echo "**Selected text:**"
+        echo '```'
+        echo "$SELECTION"
+        echo '```'
+      fi
+    } > "$CONTEXT_FILE"
+
+    # ── Write state metadata (for the extension widget) ──
+    # Each call appends to the existing state (accumulate multiple files).
+    # Use python3 to safely handle JSON (stdin avoids shell escaping issues).
+    # Convert HAS_SELECTION to Python boolean first
+    PY_HAS_SEL="False"
+    JSON_HAS_SEL="false"
+    if [ "$HAS_SELECTION" = "true" ]; then
+      PY_HAS_SEL="True"
+      JSON_HAS_SEL="true"
+    fi
+
+    APPEND_RESULT=0
+    # Step 1: write the new entry to a temp file as JSON
+    TMPENTRY=$(mktemp)
+    echo "$FILE" | python3 -c "
+import json, sys
+entry = {
+    'filePath': sys.stdin.read().strip(),
+    'lineStart': ${LINE_START:-None},
+    'lineEnd': ${LINE_END:-None},
+    'hasSelection': ${PY_HAS_SEL},
+}
+with open('$TMPENTRY', 'w') as f:
+    json.dump(entry, f)
+" 2>/dev/null || APPEND_RESULT=1
+
+    # Step 2: read existing state, append, write back
+    if [ $APPEND_RESULT -eq 0 ]; then
+      python3 -c "
+import json
+entries = []
+try:
+    with open('$STATE_FILE') as f:
+        entries = json.load(f)
+except (FileNotFoundError, json.JSONDecodeError):
+    pass
+with open('$TMPENTRY') as f:
+    new_entry = json.load(f)
+entries.append(new_entry)
+with open('$STATE_FILE', 'w') as f:
+    json.dump(entries, f)
+" 2>/dev/null || APPEND_RESULT=1
+    fi
+
+    rm -f "$TMPENTRY"
+
+    # Fallback: minimal JSON without python3
+    if [ $APPEND_RESULT -ne 0 ]; then
+      ESCAPED_FILE=$(echo "$FILE" | sed 's/\\/\\\\/g; s/"/\\"/g')
+      # Read existing, append (simple but fragile)
+      EXISTING=""
+      if [ -f "$STATE_FILE" ]; then
+        EXISTING=$(cat "$STATE_FILE" 2>/dev/null | head -c -2 2>/dev/null)
+        EXISTING="${EXISTING},"
+      fi
+      echo "${EXISTING}{\"filePath\":\"${ESCAPED_FILE}\",\"lineStart\":${LINE_START:-null},\"lineEnd\":${LINE_END:-null},\"hasSelection\":${JSON_HAS_SEL}}]" > "$STATE_FILE"
+    fi
+
+    echo "✓ Helix context stored from $FILE${RANGE:+:$RANGE}"
+    ;;
+
+  clear)
+    rm -f "$CONTEXT_FILE" "$STATE_FILE"
+    echo "✓ Helix context cleared"
+    ;;
+
+  reload)
+    # Find Helix tmux pane and send :reload-all
+    PANE=$(tmux list-panes -a -F '#{pane_pid} #{pane_id}' 2>/dev/null | \
+      while read pid pane_id; do
+        for child in $(pgrep -P "$pid" 2>/dev/null); do
+          cmd=$(ps -o comm= -p "$child" 2>/dev/null | tr -d ' ')
+          if [ "$cmd" = "hx" ]; then
+            echo "$pane_id"
+            break 2
+          fi
+        done
+      done)
+
+    if [ -n "$PANE" ]; then
+      tmux send-keys -t "$PANE" Escape ':reload-all' Enter
+      echo "✓ Sent :reload-all to Helix pane $PANE"
+    else
+      echo "⚠ Helix pane not found — reload manually with :reload-all" >&2
+      exit 1
+    fi
+    ;;
+
+  help|*)
+    echo "Usage:"
+    echo "  helix-pi context <filepath> [start-end]   # Store context (pipe selection to stdin)"
+    echo "  helix-pi clear                            # Clear stored context"
+    echo "  helix-pi reload                           # Tell Helix to reload all buffers"
+    exit 0
+    ;;
+esac

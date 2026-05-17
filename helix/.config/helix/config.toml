@@ -23,6 +23,8 @@ e = [
   ':sh printf "\x1b[?1049h\x1b[?2004h" > /dev/tty',
   ':open %sh{cat /tmp/unique-file}',
   ':redraw',
+  ':set mouse false',
+  ':set mouse true',
 ]
 E = [
   ':sh rm -f /tmp/unique-file',
@@ -30,6 +32,8 @@ E = [
   ':sh printf "\x1b[?1049h\x1b[?2004h" > /dev/tty',
   ':open %sh{cat /tmp/unique-file}',
   ':redraw',
+  ':set mouse false',
+  ':set mouse true',
 ]
 g = [
   ':insert-output lazygit',
@@ -42,8 +46,16 @@ o = ":sh tmux send-keys -t \"$(tmux list-panes -a -F '#{pane_pid} #{pane_id}' | 
 l = ":sh tmux send-keys -t \"$(tmux list-panes -a -F '#{pane_pid} #{pane_id}' | while read p i; do pgrep -P \"$p\" -f claude >/dev/null && { echo \"$i\"; break; }; done)\" \"@%{buffer_name}:%{selection_line_start}-%{selection_line_end}\""
 p = ":sh tmux send-keys -t \"$(tmux list-panes -a -F '#{pane_pid} #{pane_id}' | while read p i; do pgrep -P \"$p\" -f claude >/dev/null && { echo \"$i\"; break; }; done)\" \"@%{buffer_name}:%{selection_line_start}-%{selection_line_end}\" Escape \"[13;2u\" Escape \"[13;2u\" \"%{selection}\""
 
+# pi dev integration
+[keys.normal.space.i]
+o = ":sh ~/.local/bin/helix-pi context %{buffer_name}"
+l = ":sh ~/.local/bin/helix-pi context %{buffer_name} %{selection_line_start}-%{selection_line_end}"
+p = ":sh printf '%%s' \"%{selection}\" | ~/.local/bin/helix-pi context %{buffer_name} %{selection_line_start}-%{selection_line_end}"
+c = ":sh ~/.local/bin/helix-pi clear"
+
 [editor]
 bufferline = "always"
+end-of-line-diagnostics = "info"
 
 [editor.cursor-shape]
 insert = 'bar'
@@ -52,3 +64,7 @@ select = 'underline'
 
 [editor.file-picker]
 hidden = false
+
+[editor.inline-diagnostics]
+# other-lines = 'warning'
+cursor-line = 'warning'
