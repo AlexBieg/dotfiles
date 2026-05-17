@@ -38,7 +38,9 @@ E = [
 g = [
   ':insert-output lazygit',
   ':reload-all',
-  ':redraw'
+  ':redraw',
+  ':set mouse false',
+  ':set mouse true',
 ]
 
 [keys.normal.space.o]
