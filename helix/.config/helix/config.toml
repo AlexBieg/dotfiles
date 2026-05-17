@@ -58,6 +58,8 @@ c = ":sh ~/.local/bin/helix-pi clear"
 [editor]
 bufferline = "always"
 end-of-line-diagnostics = "info"
+rulers = [120]
+color-modes = true
 
 [editor.cursor-shape]
 insert = 'bar'
@@ -70,3 +72,36 @@ hidden = false
 [editor.inline-diagnostics]
 # other-lines = 'warning'
 cursor-line = 'warning'
+
+[editor.statusline]
+left = ["mode", "spinner", "version-control"]
+center = []
+right = ["file-name", "diagnostics", "register", "position-percentage"]
+separator = '=='
+
+[editor.lsp]
+display-inlay-hints = true
+
+[editor.auto-save]
+focus-lost = true
+
+[editor.whitespace.render]
+space = "all"
+tab = "all"
+nbsp = "all"
+nnbsp = "all"
+newline = "all"
+
+
+[editor.whitespace.characters]
+space = "·"
+nbsp = "⍽"
+nnbsp = "␣"
+tab = "→"
+newline = "⏎"
+tabpad = "·" 
+
+[editor.indent-guides]
+render = true
+character = "▏" # Some characters that work well: "▏", "┆", "┊", "⸽"
+skip-levels = 1

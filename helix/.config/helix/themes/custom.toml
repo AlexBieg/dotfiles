@@ -1,10 +1,13 @@
 # Author: dgkf
 
 "ui.background" = { }
-"ui.background.separator" = { fg = "red" }
+"ui.background.separator" = { fg = "yellow" }
 "ui.cursor" = { fg = "light-gray", modifiers = ["reversed"] }
-"ui.cursor.match" = { fg = "light-yellow", modifiers = ["reversed"] }
-"ui.cursor.primary" = { fg = "light-gray", modifiers = ["reversed"] }
+"ui.cursor.match" = { fg = "light-gray", modifiers = ["reversed"] }
+"ui.cursor.primary" = { fg = "light-magenta", modifiers = ["reversed"] }
+"ui.cursor.primary.normal" = { fg = "yellow", modifiers = ["reversed"]}
+"ui.cursor.primary.insert" = { fg = "blue", modifiers = ["reversed"]}
+"ui.cursor.primary.select" = { fg = "light-magenta", modifiers = ["reversed"]}
 "ui.cursor.secondary" = { fg = "gray", modifiers = ["reversed"] }
 "ui.cursorline.primary" = { bg = "black" }
 "ui.gutter" = { }
@@ -17,11 +20,16 @@
 "ui.menu.scroll" = { fg = "light-blue" }
 "ui.popup" = { bg = "black" }
 "ui.selection" = { bg = "gray" }
-"ui.statusline" = { fg = "light-gray", bg = "gray" }
-"ui.statusline.inactive" = { bg = "black" }
+"ui.statusline" = { fg = "light-gray", bg = "black" }
+"ui.statusline.normal" = { fg = "black", bg = "yellow" }
+"ui.statusline.insert" = { fg = "black", bg = "blue" }
+"ui.statusline.select" = { fg = "black", bg = "light-magenta" }
+"ui.statusline.inactive" = { bg = "default" }
+"ui.bufferline" = { bg="black", fg="yellow", modifiers = []}
+"ui.bufferline.active" = { fg = "black", bg = "yellow", modifiers = ["bold", "rapid_blink"] }
 "ui.virtual" = { fg = "white", bg = "black", modifiers = ["bold", "italic", "bright"] }
 "ui.virtual.indent-guide" = { fg = "gray" }
-"ui.virtual.whitespace" = {}
+"ui.virtual.whitespace" = {fg="gray", modifiers = ["dim"]}
 "ui.virtual.wrap" = { fg = "gray" }
 "ui.virtual.inlay-hint" = { fg = "light-gray", modifiers = ["dim", "italic"] }
 "ui.virtual.inlay-hint.parameter" = { fg = "yellow", modifiers = ["dim", "italic"] }
