@@ -34,6 +34,7 @@
 "ui.virtual.inlay-hint" = { fg = "light-gray", modifiers = ["dim", "italic"] }
 "ui.virtual.inlay-hint.parameter" = { fg = "yellow", modifiers = ["dim", "italic"] }
 "ui.virtual.inlay-hint.type" = { fg = "blue", modifiers = ["dim", "italic"] }
+"ui.virtual.ruler" = { bg = "black"}
 "ui.window" = { fg = "gray", modifiers = ["dim"] }
 
 "comment" = { fg = "light-gray", modifiers = ["italic", "dim"] }
