@@ -1,0 +1,11 @@
+git/.gitconfig.local
+  ai_agent 1-5
+install.sh
+  ai_agent 15,116-119,131
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.9",
+  "base_commit_sha": "1855ffaeba4a99b42279739c02d2851c05255eaf",
+  "prompts": {}
+}
