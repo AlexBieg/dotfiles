@@ -35,13 +35,6 @@ E = [
   ':set mouse false',
   ':set mouse true',
 ]
-g = [
-  ':insert-output lazygit',
-  ':reload-all',
-  ':redraw',
-  ':set mouse false',
-  ':set mouse true',
-]
 
 [keys.normal.space.o]
 o = ":sh tmux send-keys -t \"$(tmux list-panes -a -F '#{pane_pid} #{pane_id}' | while read p i; do pgrep -P \"$p\" -f claude >/dev/null && { echo \"$i\"; break; }; done)\" \"@%{buffer_name}\""
