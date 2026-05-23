@@ -12,20 +12,26 @@ info()  { echo -e "${GREEN}[INFO]${NC} $1"; }
 warn()  { echo -e "${YELLOW}[WARN]${NC} $1"; }
 error() { echo -e "${RED}[ERROR]${NC} $1"; }
 
-AVAILABLE_PACKAGES=(zsh tmux helix zellij yazi pi)
+AVAILABLE_PACKAGES=(zsh tmux helix zellij yazi pi starship git)
+AVAILABLE_PROFILES=(personal work)
+PROFILE=""
 
 usage() {
     cat <<EOF
-Usage: $(basename "$0") [package...]
+Usage: $(basename "$0") [--profile=PROFILE] [package...]
 
 Install dotfile packages using GNU Stow.
 
 Packages: ${AVAILABLE_PACKAGES[*]}
+Profiles: ${AVAILABLE_PROFILES[*]}
+
 If no packages are specified, all are installed.
+If --profile is given, profile-specific overrides are stowed on top.
 
 Examples:
-  ./install.sh              # Install all packages
-  ./install.sh zsh tmux     # Install only zsh and tmux
+  ./install.sh --profile=personal         # Install all packages with personal profile
+  ./install.sh --profile=work zsh tmux    # Install only zsh and tmux with work profile
+  ./install.sh zsh tmux                   # Install only zsh and tmux (no profile)
 EOF
     exit 0
 }
@@ -34,10 +40,26 @@ if [[ "$*" == *--help* ]] || [[ "$*" == *-h* ]]; then
     usage
 fi
 
-if [ $# -eq 0 ]; then
+# ── Parse arguments ──────────────────────────────────────────────
+PACKAGES=()
+for arg in "$@"; do
+    if [[ "$arg" == --profile=* ]]; then
+        PROFILE="${arg#--profile=}"
+    else
+        PACKAGES+=("$arg")
+    fi
+done
+
+if [ ${#PACKAGES[@]} -eq 0 ]; then
     PACKAGES=("${AVAILABLE_PACKAGES[@]}")
-else
-    PACKAGES=("$@")
+fi
+
+# Validate profile
+if [ -n "$PROFILE" ]; then
+    if [ ! -d "$DOTFILES_DIR/profiles/$PROFILE" ]; then
+        error "Unknown profile: $PROFILE. Available: ${AVAILABLE_PROFILES[*]}"
+        exit 1
+    fi
 fi
 
 # ── Ensure GNU Stow ──────────────────────────────────────────────
@@ -54,10 +76,22 @@ fi
 backup_if_exists() {
     local target="$1"
     if [ -e "$target" ] && [ ! -L "$target" ]; then
-        local backup="${target}.backup"
-        warn "Backing up $target → $backup"
-        mv "$target" "$backup"
+        if [ -f "$target" ]; then
+            local backup="${target}.backup"
+            warn "Backing up $target → $backup"
+            mv "$target" "$backup"
+        fi
     fi
+}
+
+# Ensure target directories exist so --no-folding works
+ensure_dirs() {
+    local pkg_dir="$1"
+    while IFS= read -r dir; do
+        local relative="${dir#$pkg_dir/}"
+        local target="$HOME/$relative"
+        mkdir -p "$target"
+    done < <(find "$pkg_dir" -type d -mindepth 1)
 }
 
 stow_package() {
@@ -71,25 +105,43 @@ stow_package() {
 
     info "Stowing package: $pkg"
 
+    ensure_dirs "$pkg_dir"
+
     while IFS= read -r file; do
         local relative="${file#$pkg_dir/}"
         local target="$HOME/$relative"
         backup_if_exists "$target"
     done < <(find "$pkg_dir" -type f)
 
-    cd "$DOTFILES_DIR" && stow -v -t "$HOME" "$pkg"
+    cd "$DOTFILES_DIR" && stow --no-folding -v -t "$HOME" "$pkg"
+}
+
+stow_profile() {
+    local profile="$1"
+    local profile_dir="$DOTFILES_DIR/profiles/$profile"
+
+    info "Applying profile: $profile"
+
+    # Each subdirectory in the profile mirrors a package structure
+    for pkg_dir in "$profile_dir"/*/; do
+        [ -d "$pkg_dir" ] || continue
+        local pkg
+        pkg="$(basename "$pkg_dir")"
+
+        ensure_dirs "$pkg_dir"
+
+        while IFS= read -r file; do
+            local relative="${file#$pkg_dir}"
+            local target="$HOME/$relative"
+            backup_if_exists "$target"
+        done < <(find "$pkg_dir" -type f)
+
+        cd "$profile_dir" && stow --no-folding -v -t "$HOME" "$pkg"
+    done
 }
 
 # ── Per-package setup ────────────────────────────────────────────
 setup_zsh() {
-    if [ ! -d "$HOME/.oh-my-zsh" ]; then
-        info "Installing Oh My Zsh..."
-        export RUNZSH=no
-        export CHSH=no
-        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-    else
-        info "Oh My Zsh already installed."
-    fi
     stow_package "zsh"
 }
 
@@ -113,22 +165,37 @@ setup_pi() {
     stow_package "pi"
 }
 
+setup_starship() {
+    stow_package "starship"
+}
+
+setup_git() {
+    stow_package "git"
+}
+
 # ── Main ─────────────────────────────────────────────────────────
 info "Setting up dotfiles from $DOTFILES_DIR"
 
 for pkg in "${PACKAGES[@]}"; do
     case "$pkg" in
-        zsh)   setup_zsh   ;;
-        tmux)  setup_tmux  ;;
-        helix) setup_helix ;;
-        zellij) setup_zellij ;;
-        yazi) setup_yazi ;;
-        pi) setup_pi ;;
+        zsh)      setup_zsh      ;;
+        tmux)     setup_tmux     ;;
+        helix)    setup_helix    ;;
+        zellij)   setup_zellij   ;;
+        yazi)     setup_yazi     ;;
+        pi)       setup_pi       ;;
+        starship) setup_starship ;;
+        git)      setup_git      ;;
         *)
             error "Unknown package: $pkg. Available: ${AVAILABLE_PACKAGES[*]}"
             exit 1
             ;;
     esac
 done
+
+# ── Apply profile overrides ──────────────────────────────────────
+if [ -n "$PROFILE" ]; then
+    stow_profile "$PROFILE"
+fi
 
 info "Done! Dotfiles are set up."

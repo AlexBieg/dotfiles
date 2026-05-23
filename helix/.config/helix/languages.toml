@@ -7,14 +7,14 @@ file-types = ["py", "ipynb"]
 comment-token = "#"
 shebangs = ["python"]
 
-# [language-server.ty]
-# command = "ty"
-# args = ["server"]
-
-# [language-server.lsp-ai]
-# command = "lsp-ai"
-#
+[[language]]
+name = 'tsx'
+language-servers = ['typescript-language-server', 'oxlint-language-server']
 
 [[language]]
 name = "bash"
 file-types = ["sh", "bash", "zsh", "conf", "tmux.conf", ".tmux.conf"]
+
+[language-server.oxlint-language-server]
+command = "oxlint"
+args = ['--lsp']

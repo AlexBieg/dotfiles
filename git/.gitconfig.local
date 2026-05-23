@@ -1,0 +1,5 @@
+[pager]
+	diff = diffnav
+
+[delta]
+	navigate = true
