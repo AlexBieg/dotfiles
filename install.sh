@@ -122,22 +122,24 @@ stow_profile() {
 
     info "Applying profile: $profile"
 
-    # Each subdirectory in the profile mirrors a package structure
-    for pkg_dir in "$profile_dir"/*/; do
-        [ -d "$pkg_dir" ] || continue
-        local pkg
-        pkg="$(basename "$pkg_dir")"
+    # Directly symlink profile files into $HOME (avoids stow conflicts
+    # when base packages already own parent directories)
+    while IFS= read -r file; do
+        local relative="${file#$profile_dir/}"
+        # Strip the package prefix (e.g., zsh/.zshrc.d/90-local.zsh -> .zshrc.d/90-local.zsh)
+        local pkg="${relative%%/*}"
+        local inner="${relative#$pkg/}"
+        local target="$HOME/$inner"
 
-        ensure_dirs "$pkg_dir"
+        mkdir -p "$(dirname "$target")"
+        backup_if_exists "$target"
 
-        while IFS= read -r file; do
-            local relative="${file#$pkg_dir}"
-            local target="$HOME/$relative"
-            backup_if_exists "$target"
-        done < <(find "$pkg_dir" -type f)
+        if [ -L "$target" ]; then
+            rm "$target"
+        fi
 
-        cd "$profile_dir" && stow --no-folding -v -t "$HOME" "$pkg"
-    done
+        ln -sv "$file" "$target"
+    done < <(find "$profile_dir" -type f)
 }
 
 # ── Per-package setup ────────────────────────────────────────────
