@@ -1,3 +1,5 @@
+set fish_greeting
+
 if status is-interactive
     # =========================================================================
     # PATH setup (from .zshenv)

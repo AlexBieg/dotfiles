@@ -1,6 +1,9 @@
 {
-  "lastChangelogVersion": "0.74.1",
+  "lastChangelogVersion": "0.75.5",
   "defaultProvider": "opencode",
   "defaultModel": "big-pickle",
-  "defaultThinkingLevel": "medium"
+  "defaultThinkingLevel": "medium",
+  "packages": [
+    "npm:pi-web-access"
+  ]
 }
