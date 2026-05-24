@@ -13,3 +13,13 @@ eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --bind='alt-j:down,alt-k:up'"
+
+# eza overrides for ls and related commands
+alias ls='eza --icons=auto'
+alias ll='eza -l --icons=auto --git'
+alias la='eza -la --icons=auto --git'
+alias l='eza -l --icons=auto --git'
+alias lt='eza -T --icons=auto --git'
+alias lta='eza -Ta --icons=auto --git'
+alias lsa='eza -la --icons=auto --git'
+alias tree='eza -T --icons=auto'
