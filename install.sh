@@ -12,7 +12,7 @@ info()  { echo -e "${GREEN}[INFO]${NC} $1"; }
 warn()  { echo -e "${YELLOW}[WARN]${NC} $1"; }
 error() { echo -e "${RED}[ERROR]${NC} $1"; }
 
-AVAILABLE_PACKAGES=(zsh tmux helix zellij yazi pi starship git)
+AVAILABLE_PACKAGES=(zsh tmux helix zellij yazi pi starship git fish)
 AVAILABLE_PROFILES=(personal work)
 PROFILE=""
 
@@ -175,6 +175,10 @@ setup_git() {
     stow_package "git"
 }
 
+setup_fish() {
+    stow_package "fish"
+}
+
 # ── Main ─────────────────────────────────────────────────────────
 info "Setting up dotfiles from $DOTFILES_DIR"
 
@@ -188,6 +192,7 @@ for pkg in "${PACKAGES[@]}"; do
         pi)       setup_pi       ;;
         starship) setup_starship ;;
         git)      setup_git      ;;
+        fish)     setup_fish     ;;
         *)
             error "Unknown package: $pkg. Available: ${AVAILABLE_PACKAGES[*]}"
             exit 1
