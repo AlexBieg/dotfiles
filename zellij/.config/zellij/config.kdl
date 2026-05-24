@@ -2,6 +2,9 @@ keybinds clear-defaults=true {
     locked {
         bind "Ctrl a" { SwitchToMode "normal"; }
     }
+    normal {
+        bind "Ctrl a" { SwitchToMode "locked"; }
+    }
     pane {
         bind "left" { MoveFocus "left"; }
         bind "down" { MoveFocus "down"; }
@@ -299,7 +302,7 @@ web_client {
 // theme "atelier-sulphurpool"
 // theme "ayu_mirage"
 // theme "ayu_dark"
-// theme "catppuccin-frappe"
+theme "catppuccin-frappe"
 // theme "catppuccin-macchiato"
 // theme "cyber-noir"
 // theme "blade-runner"
@@ -318,7 +321,7 @@ web_client {
 // theme "one-half-dark"
 // theme "onedark"
 // theme "solarized-dark"
-theme "tokyo-night-dark"
+// theme "tokyo-night-dark"
 // theme "tokyo-night-storm"
 // theme "tokyo-night"
 // theme "vesper"
