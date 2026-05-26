@@ -13,8 +13,20 @@ language-servers = ['typescript-language-server', 'oxlint-language-server']
 
 [[language]]
 name = "bash"
-file-types = ["sh", "bash", "zsh", "conf", "tmux.conf", ".tmux.conf"]
+file-types = ["sh", "bash", "zsh", "conf", "tmux.conf", ".tmux.conf", ".zshrc"]
 
 [language-server.oxlint-language-server]
 command = "oxlint"
 args = ['--lsp']
+
+[[language]]
+name = "markdown"
+soft-wrap.enable = true
+
+[language-server.pyright]
+command = "pyright-langserver"
+args = ["--stdio"]
+
+[language-server.ruff]
+command = "ruff"
+args = ["server"]

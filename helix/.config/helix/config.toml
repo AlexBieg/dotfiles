@@ -36,6 +36,13 @@ E = [
   ':set mouse true',
 ]
 
+g = [
+  ":open %sh{git status --short | awk '{print $2}' | fzf --preview \"git diff --color=always {}\" --preview-window top}",
+  ":redraw",
+  ':set mouse false',
+  ':set mouse true',
+]
+
 [keys.normal.space.o]
 o = ":sh tmux send-keys -t \"$(tmux list-panes -a -F '#{pane_pid} #{pane_id}' | while read p i; do pgrep -P \"$p\" -f claude >/dev/null && { echo \"$i\"; break; }; done)\" \"@%{buffer_name}\""
 l = ":sh tmux send-keys -t \"$(tmux list-panes -a -F '#{pane_pid} #{pane_id}' | while read p i; do pgrep -P \"$p\" -f claude >/dev/null && { echo \"$i\"; break; }; done)\" \"@%{buffer_name}:%{selection_line_start}-%{selection_line_end}\""
@@ -50,7 +57,7 @@ c = ":sh ~/.local/bin/helix-pi clear"
 
 [editor]
 bufferline = "always"
-end-of-line-diagnostics = "info"
+end-of-line-diagnostics = "hint"
 color-modes = true
 
 [editor.cursor-shape]
@@ -60,10 +67,11 @@ select = 'underline'
 
 [editor.file-picker]
 hidden = false
+git-ignore = false
 
 [editor.inline-diagnostics]
 # other-lines = 'warning'
-cursor-line = 'warning'
+cursor-line = 'hint'
 
 [editor.statusline]
 left = ["mode", "spinner", "version-control"]
