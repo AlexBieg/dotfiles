@@ -280,34 +280,6 @@ load_plugins {
 web_client {
     font "monospace"
 }
-
-themes {
-    personal {
-        frame_selected {
-            base 100 100 100
-            background 0 0 0
-            emphasis_0 100 0 0 
-            emphasis_1 100 0 0 
-            emphasis_2 100 0 0 
-            emphasis_3 100 0 0 
-        }
-        frame_unselected {
-            base 100 100 0
-            background 100 100 0
-            emphasis_0 100 0 0 
-            emphasis_1 100 0 0 
-            emphasis_2 100 0 0 
-            emphasis_3 100 0 0
-        }
-        text_unselected {
-            base 100 0 0 
-            emphasis_0 100 0 0 
-            emphasis_1 100 0 0 
-            emphasis_2 100 0 0 
-            emphasis_3 100 0 0 
-        }
-    }
-}
  
 // Use a simplified UI without special fonts (arrow glyphs)
 // Options:
