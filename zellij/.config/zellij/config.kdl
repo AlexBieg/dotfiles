@@ -4,6 +4,8 @@ keybinds clear-defaults=true {
     }
     normal {
         bind "Ctrl a" { SwitchToMode "locked"; }
+        bind "l" { GoToNextTab;   SwitchToMode "locked"; }
+        bind "h" { GoToPreviousTab;  SwitchToMode "locked"; }
     }
     pane {
         bind "left" { MoveFocus "left"; }
