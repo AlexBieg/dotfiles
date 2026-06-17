@@ -1,4 +1,4 @@
-theme = 'custom'
+theme = 'catppuccin_mocha'
 
 [keys.insert]
 j = { k = "normal_mode" } # Maps `jk` to exit insert mode
@@ -57,6 +57,7 @@ p = ":sh printf '%%s' \"%{selection}\" | ~/.local/bin/helix-pi context %{buffer_
 c = ":sh ~/.local/bin/helix-pi clear"
 
 [editor]
+mode-switch-animation = true
 bufferline = "always"
 end-of-line-diagnostics = "hint"
 color-modes = true
@@ -75,10 +76,14 @@ hidden = false
 cursor-line = 'hint'
 
 [editor.statusline]
-left = ["mode", "spinner", "version-control"]
+left = ["spinner", "version-control"]
 center = ["search-count"]
-right = ["file-name", "diagnostics", "register", "position-percentage"]
+right = ["diagnostics", "register"]
 separator = '=='
+
+[editor.statusline.second-row]
+left = ["mode", "file-name"]
+right = ["position-percentage"]
 
 [editor.lsp]
 display-inlay-hints = true
@@ -106,3 +111,17 @@ tabpad = "·"
 render = true
 character = "▏" # Some characters that work well: "▏", "┆", "┊", "⸽"
 skip-levels = 1
+
+[editor.gradient-borders]
+enable = true
+thickness = 1
+direction = "horizontal"
+# start-color = "#fc00ff"
+# end-color = "#00dbde"
+start-color = "#cc2b5e"
+# middle-color = "#c471ed"
+end-color = "#753a88"
+animation-speed = 0
+
+[editor.notifications]
+gradient = true
