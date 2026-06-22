@@ -78,7 +78,7 @@ cursor-line = 'hint'
 [editor.statusline]
 left = ["spinner", "version-control"]
 center = ["search-count"]
-right = ["diagnostics", "register"]
+right = ["diagnostics", "register", "macro-recording", "pending-keys"]
 separator = '=='
 
 [editor.statusline.second-row]
@@ -125,3 +125,7 @@ animation-speed = 0
 
 [editor.notifications]
 gradient = true
+
+[editor.cmdline]
+show-icons = true
+use-full-height = true
